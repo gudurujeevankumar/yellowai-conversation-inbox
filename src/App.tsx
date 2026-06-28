@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import type { Conversation } from './types';
 import TopBar from './components/TopBar';
 import ListPanel from './components/inbox/ListPanel';
@@ -16,6 +16,26 @@ export default function App() {
   const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null);
   const [statusOverrides, setStatusOverrides] = useState<Record<string, 'waiting' | 'assigned' | 'resolved'>>({});
   const [toasts, setToasts] = useState<Toast[]>([]);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    
+    const applyTheme = (e: MediaQueryListEvent | MediaQueryList) => {
+      if (e.matches) {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+      } else {
+        document.documentElement.classList.add('light');
+        document.documentElement.classList.remove('dark');
+      }
+    };
+
+    applyTheme(mediaQuery);
+
+    const listener = (e: MediaQueryListEvent) => applyTheme(e);
+    mediaQuery.addEventListener('change', listener);
+    return () => mediaQuery.removeEventListener('change', listener);
+  }, []);
 
   const showToast = useCallback((message: string) => {
     const id = Date.now().toString() + Math.random().toString();
