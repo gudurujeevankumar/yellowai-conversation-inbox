@@ -171,7 +171,7 @@ This command compiles the TypeScript code and uses Vite to bundle the applicatio
 </tr>
 <tr>
 <td>
-<img src="./screenshots/dark-mobile.png" width="300" alt="Dark Mobile">
+<img src="./screenshots/dark-mobile.png" width="190" alt="Dark Mobile">
 </td>
 <td>
 <img src="./screenshots/dark-desktop.png" width="650" alt="Dark Desktop">
@@ -188,7 +188,7 @@ This command compiles the TypeScript code and uses Vite to bundle the applicatio
 </tr>
 <tr>
 <td>
-<img src="./screenshots/light-mobile.png" width="300" alt="Light Mobile">
+<img src="./screenshots/light-mobile.png" width="190" alt="Light Mobile">
 </td>
 <td>
 <img src="./screenshots/light-desktop.png" width="650" alt="Light Desktop">
