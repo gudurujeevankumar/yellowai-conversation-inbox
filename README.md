@@ -162,11 +162,39 @@ This command compiles the TypeScript code and uses Vite to bundle the applicatio
 
 ## Screenshots
 
-### Desktop
-![Desktop Layout](screenshots/desktop.png)
+### 🌙 Dark Theme
 
-### Mobile
-![Mobile Layout](screenshots/mobile.png)
+<table>
+<tr>
+<td align="center"><strong>Mobile</strong></td>
+<td align="center"><strong>Desktop</strong></td>
+</tr>
+<tr>
+<td>
+<img src="./screenshots/dark-mobile.png" width="320" alt="Dark Mobile"/>
+</td>
+<td>
+<img src="./screenshots/dark-desktop.png" width="450" alt="Dark Desktop"/>
+</td>
+</tr>
+</table>
+
+### ☀️ Light Theme
+
+<table>
+<tr>
+<td align="center"><strong>Mobile</strong></td>
+<td align="center"><strong>Desktop</strong></td>
+</tr>
+<tr>
+<td>
+<img src="./screenshots/light-mobile.png" width="320" alt="Light Mobile"/>
+</td>
+<td>
+<img src="./screenshots/light-desktop.png" width="450" alt="Light Desktop"/>
+</td>
+</tr>
+</table>
 
 ---
 
