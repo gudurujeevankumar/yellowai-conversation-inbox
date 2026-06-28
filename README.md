@@ -162,7 +162,11 @@ This command compiles the TypeScript code and uses Vite to bundle the applicatio
 
 ## Screenshots
 
-Screenshots will be added after deployment.
+### Desktop
+![Desktop Layout](screenshots/desktop.png)
+
+### Mobile
+![Mobile Layout](screenshots/mobile.png)
 
 ---
 
