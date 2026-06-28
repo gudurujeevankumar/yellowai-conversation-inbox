@@ -1,0 +1,133 @@
+@import "tailwindcss";
+
+@theme {
+  /* ── Background ────────────────────────────────── */
+  --color-bg-primary: #09090B;
+  --color-bg-secondary: #18181B;
+  --color-bg-tertiary: #27272A;
+  --color-bg-surface: #1E1E22;
+
+  /* ── Borders ───────────────────────────────────── */
+  --color-border-default: #2E2E33;
+  --color-border-focus: #6366F1;
+
+  /* ── Text ──────────────────────────────────────── */
+  --color-text-primary: #FAFAFA;
+  --color-text-secondary: #A1A1AA;
+  --color-text-tertiary: #71717A;
+
+  /* ── Urgency ───────────────────────────────────── */
+  --color-urgency-critical: #EF4444;
+  --color-urgency-critical-bg: #451A1A;
+  --color-urgency-high: #F97316;
+  --color-urgency-high-bg: #432107;
+  --color-urgency-medium: #EAB308;
+  --color-urgency-medium-bg: #3B3107;
+  --color-urgency-low: #71717A;
+  --color-urgency-low-bg: #27272A;
+
+  /* ── Sentiment ─────────────────────────────────── */
+  --color-sentiment-angry: #F87171;
+  --color-sentiment-frustrated: #FB923C;
+  --color-sentiment-neutral: #A1A1AA;
+  --color-sentiment-satisfied: #4ADE80;
+
+  /* ── Actions ───────────────────────────────────── */
+  --color-action-primary: #6366F1;
+  --color-action-primary-hover: #818CF8;
+  --color-action-success: #22C55E;
+  --color-action-danger: #EF4444;
+
+  /* ── Tier ──────────────────────────────────────── */
+  --color-tier-enterprise: #A78BFA;
+  --color-tier-enterprise-bg: #2E1065;
+  --color-tier-pro: #60A5FA;
+  --color-tier-pro-bg: #172554;
+  --color-tier-standard: #A1A1AA;
+  --color-tier-standard-bg: #27272A;
+
+  /* ── Brand ─────────────────────────────────────── */
+  --color-brand: #FBBF24;
+
+  /* ── Spacing ───────────────────────────────────── */
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 20px;
+  --spacing-6: 24px;
+  --spacing-8: 32px;
+
+  /* ── Radius ────────────────────────────────────── */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+
+  /* ── Shadows ───────────────────────────────────── */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-focus: 0 0 0 2px var(--color-border-focus);
+
+  /* ── Font ──────────────────────────────────────── */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* ── Base Styles ─────────────────────────────────── */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Focus Styles ────────────────────────────────── */
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+  border-radius: var(--radius-md);
+}
+
+/* ── Reduced Motion ──────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Scrollbar ───────────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-default);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-tertiary);
+}
