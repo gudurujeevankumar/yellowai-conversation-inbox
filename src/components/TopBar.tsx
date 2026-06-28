@@ -1,7 +1,7 @@
 export default function TopBar() {
   return (
     <header
-      className="h-[52px] shrink-0 flex items-center justify-between px-5 border-b"
+      className="sticky top-0 z-50 w-full h-[52px] shrink-0 flex items-center justify-between px-4 sm:px-5 border-b"
       style={{
         backgroundColor: 'var(--color-bg-secondary)',
         borderColor: 'var(--color-border-default)',
