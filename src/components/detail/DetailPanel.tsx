@@ -1,5 +1,6 @@
-import type { ReactNode } from 'react';
-import type { Conversation } from '../../types';
+import { useState, useRef, useEffect, type ReactNode } from 'react';
+import type { Conversation, Message } from '../../types';
+import MessageComposer from './MessageComposer';
 
 interface DetailPanelProps {
   children?: ReactNode;
@@ -22,6 +23,29 @@ export default function DetailPanel({ children, conversation, className = '', on
   }
 
   const { customer, status, urgency, id, messages } = conversation;
+  
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [localMessages, setLocalMessages] = useState<Message[]>([]);
+
+  useEffect(() => {
+    setLocalMessages([]);
+  }, [id]);
+
+  const allMessages = [...messages, ...localMessages];
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [allMessages]);
+
+  const handleSendMessage = (content: string) => {
+    const newMessage: Message = {
+      id: `msg-local-${Date.now()}`,
+      role: 'agent',
+      content,
+      timestamp: new Date().toISOString()
+    };
+    setLocalMessages(prev => [...prev, newMessage]);
+  };
   
   const getInitials = (name: string) => {
     return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
@@ -133,13 +157,13 @@ export default function DetailPanel({ children, conversation, className = '', on
       </header>
 
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-6" role="log" aria-label="Message history">
-        {messages.map((message) => {
+      <div className="flex-1 overflow-y-auto p-4 sm:p-6 flex flex-col gap-6" role="log" aria-label="Message history">
+        {allMessages.map((message) => {
           const isOutgoing = message.role === 'ai' || message.role === 'agent';
           return (
             <div 
               key={message.id} 
-              className={`flex flex-col max-w-[75%] ${isOutgoing ? 'self-end items-end' : 'self-start items-start'}`}
+              className={`flex flex-col max-w-[85%] sm:max-w-[75%] ${isOutgoing ? 'self-end items-end' : 'self-start items-start'}`}
             >
               <div 
                 className="px-4 py-3 rounded-2xl shadow-sm"
@@ -151,15 +175,18 @@ export default function DetailPanel({ children, conversation, className = '', on
                   border: isOutgoing ? 'none' : '1px solid var(--color-border-default)'
                 }}
               >
-                <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
+                <p className="text-sm leading-relaxed whitespace-pre-wrap break-words">{message.content}</p>
               </div>
-              <span className="text-xs mt-1.5 px-1 font-medium" style={{ color: 'var(--color-text-tertiary)' }}>
+              <span className="text-[11px] sm:text-xs mt-1.5 px-1 font-medium" style={{ color: 'var(--color-text-tertiary)' }}>
                 {formatTime(message.timestamp)} • {message.role === 'customer' ? customer.name : (message.role === 'ai' ? 'AI Assistant' : 'Agent')}
               </span>
             </div>
           );
         })}
+        <div ref={messagesEndRef} />
       </div>
+
+      <MessageComposer onSend={handleSendMessage} />
     </main>
   );
 }
