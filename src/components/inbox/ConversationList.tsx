@@ -2,9 +2,13 @@ import { useEffect, useState } from 'react';
 import type { Conversation, FetchState } from '../../types';
 import ConversationItem from './ConversationItem';
 
-export default function ConversationList() {
+interface ConversationListProps {
+  selectedId?: string;
+  onSelect?: (conversation: Conversation) => void;
+}
+
+export default function ConversationList({ selectedId, onSelect }: ConversationListProps) {
   const [state, setState] = useState<FetchState<Conversation[]>>({ status: 'idle' });
-  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   useEffect(() => {
     let mounted = true;
@@ -70,7 +74,7 @@ export default function ConversationList() {
           key={conversation.id}
           conversation={conversation}
           isSelected={selectedId === conversation.id}
-          onClick={() => setSelectedId(conversation.id)}
+          onClick={() => onSelect?.(conversation)}
         />
       ))}
     </div>
