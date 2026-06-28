@@ -7,9 +7,11 @@ interface DetailPanelProps {
   conversation?: Conversation | null;
   className?: string;
   onBack?: () => void;
+  onAssign?: (id: string) => void;
+  onResolve?: (id: string) => void;
 }
 
-export default function DetailPanel({ children, conversation, className = '', onBack }: DetailPanelProps) {
+export default function DetailPanel({ children, conversation, className = '', onBack, onAssign, onResolve }: DetailPanelProps) {
   if (!conversation) {
     return (
       <main
@@ -59,6 +61,50 @@ export default function DetailPanel({ children, conversation, className = '', on
   const formatFullDate = (isoString: string) => {
     const date = new Date(isoString);
     return date.toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+  };
+
+  const ActionButtons = () => {
+    const isAssigned = status === 'assigned';
+    const isResolved = status === 'resolved';
+
+    return (
+      <div className="flex items-center gap-2 shrink-0">
+        <button
+          onClick={() => onAssign?.(id)}
+          disabled={isAssigned || isResolved}
+          className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          style={{
+            backgroundColor: isAssigned ? 'var(--color-bg-tertiary)' : 'var(--color-action-primary)',
+            color: isAssigned ? 'var(--color-text-tertiary)' : '#fff'
+          }}
+          aria-label={isAssigned ? 'Already assigned' : 'Assign conversation'}
+        >
+          {isAssigned ? 'Assigned' : 'Assign'}
+        </button>
+        <button
+          onClick={() => onResolve?.(id)}
+          disabled={isResolved}
+          className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors hover:bg-[var(--color-bg-tertiary)] disabled:opacity-50 disabled:cursor-not-allowed border"
+          style={{
+            backgroundColor: 'transparent',
+            borderColor: 'var(--color-border-default)',
+            color: 'var(--color-text-primary)'
+          }}
+          aria-label={isResolved ? 'Already resolved' : 'Resolve conversation'}
+        >
+          {isResolved ? 'Resolved' : 'Resolve'}
+        </button>
+        <button
+          className="w-8 h-8 rounded-lg flex items-center justify-center transition-colors hover:bg-[var(--color-bg-tertiary)] border shrink-0"
+          style={{ borderColor: 'var(--color-border-default)', color: 'var(--color-text-primary)' }}
+          aria-label="More actions"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/>
+          </svg>
+        </button>
+      </div>
+    );
   };
 
   return (
@@ -146,13 +192,21 @@ export default function DetailPanel({ children, conversation, className = '', on
                 {urgency} Priority
               </span>
             </div>
+
+            {/* ROW 4: Action Buttons (Mobile) */}
+            <div className="flex md:hidden mt-2.5">
+              <ActionButtons />
+            </div>
           </div>
         </div>
 
-        {/* Desktop Date Block */}
-        <div className="hidden md:block text-right shrink-0">
-          <p className="text-sm font-medium whitespace-nowrap" style={{ color: 'var(--color-text-primary)' }}>{formatFullDate(conversation.waitingSince)}</p>
-          <p className="text-xs mt-1 whitespace-nowrap" style={{ color: 'var(--color-text-tertiary)' }}>Created</p>
+        {/* Desktop Date Block & Actions */}
+        <div className="hidden md:flex flex-col items-end gap-3 shrink-0">
+          <ActionButtons />
+          <div className="text-right">
+            <p className="text-sm font-medium whitespace-nowrap" style={{ color: 'var(--color-text-primary)' }}>{formatFullDate(conversation.waitingSince)}</p>
+            <p className="text-xs mt-1 whitespace-nowrap" style={{ color: 'var(--color-text-tertiary)' }}>Created</p>
+          </div>
         </div>
       </header>
 

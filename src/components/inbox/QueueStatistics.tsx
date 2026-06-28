@@ -47,7 +47,13 @@ function StatCard({ label, count, accentColor }: StatCardProps) {
   );
 }
 
-export default function QueueStatistics() {
+import type { ConversationStatus } from '../../types';
+
+interface QueueStatisticsProps {
+  statusOverrides?: Record<string, ConversationStatus>;
+}
+
+export default function QueueStatistics({ statusOverrides = {} }: QueueStatisticsProps) {
   const stats = useMemo(() => {
     let total = 0;
     let open = 0;
@@ -56,13 +62,14 @@ export default function QueueStatistics() {
 
     mockConversations.forEach((conv) => {
       total++;
-      if (conv.status === 'waiting') open++;
-      else if (conv.status === 'assigned') assigned++;
-      else if (conv.status === 'resolved') resolved++;
+      const status = statusOverrides[conv.id] || conv.status;
+      if (status === 'waiting') open++;
+      else if (status === 'assigned') assigned++;
+      else if (status === 'resolved') resolved++;
     });
 
     return { total, open, assigned, resolved };
-  }, []);
+  }, [statusOverrides]);
 
   return (
     <div className="pt-6 pb-6 px-4 sm:px-5 border-b shrink-0" style={{ borderColor: 'var(--color-border-default)' }}>

@@ -1,15 +1,16 @@
 import { useEffect, useState, useMemo } from 'react';
-import type { Conversation, FetchState } from '../../types';
+import type { Conversation, FetchState, ConversationStatus } from '../../types';
 import ConversationItem from './ConversationItem';
 
 interface ConversationListProps {
   selectedId?: string;
   onSelect?: (conversation: Conversation) => void;
+  statusOverrides?: Record<string, ConversationStatus>;
 }
 
 type FilterType = 'all' | 'open' | 'assigned' | 'resolved';
 
-export default function ConversationList({ selectedId, onSelect }: ConversationListProps) {
+export default function ConversationList({ selectedId, onSelect, statusOverrides = {} }: ConversationListProps) {
   const [state, setState] = useState<FetchState<Conversation[]>>({ status: 'idle' });
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState<FilterType>('all');
@@ -45,10 +46,12 @@ export default function ConversationList({ selectedId, onSelect }: ConversationL
     if (state.status !== 'success') return [];
     
     return state.data.filter(conv => {
+      const actualStatus = statusOverrides[conv.id] || conv.status;
+
       // Status Filter
-      if (activeFilter === 'open' && conv.status !== 'waiting') return false;
-      if (activeFilter === 'assigned' && conv.status !== 'assigned') return false;
-      if (activeFilter === 'resolved' && conv.status !== 'resolved') return false;
+      if (activeFilter === 'open' && actualStatus !== 'waiting') return false;
+      if (activeFilter === 'assigned' && actualStatus !== 'assigned') return false;
+      if (activeFilter === 'resolved' && actualStatus !== 'resolved') return false;
 
       // Search Filter
       if (!searchQuery.trim()) return true;
@@ -62,7 +65,7 @@ export default function ConversationList({ selectedId, onSelect }: ConversationL
 
       return matchName || matchId || matchMessage;
     });
-  }, [state, searchQuery, activeFilter]);
+  }, [state, searchQuery, activeFilter, statusOverrides]);
 
   if (state.status === 'loading' || state.status === 'idle') {
     return (
@@ -137,14 +140,17 @@ export default function ConversationList({ selectedId, onSelect }: ConversationL
              </div>
           </div>
         ) : (
-          filteredConversations.map((conversation) => (
-            <ConversationItem
-              key={conversation.id}
-              conversation={conversation}
-              isSelected={selectedId === conversation.id}
-              onClick={() => onSelect?.(conversation)}
-            />
-          ))
+          filteredConversations.map((conversation) => {
+            const actualStatus = statusOverrides[conversation.id] || conversation.status;
+            return (
+              <ConversationItem
+                key={conversation.id}
+                conversation={{ ...conversation, status: actualStatus }}
+                isSelected={selectedId === conversation.id}
+                onClick={() => onSelect?.({ ...conversation, status: actualStatus })}
+              />
+            );
+          })
         )}
       </div>
     </div>
