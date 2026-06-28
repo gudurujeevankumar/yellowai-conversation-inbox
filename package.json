@@ -12,6 +12,7 @@
   "dependencies": {
     "lucide-react": "^1.21.0",
     "msw": "^2.14.6",
+    "puppeteer": "^25.2.1",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"
   },

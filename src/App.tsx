@@ -2,12 +2,16 @@ import TopBar from './components/TopBar';
 import ListPanel from './components/inbox/ListPanel';
 import DetailPanel from './components/detail/DetailPanel';
 
+import QueueStatistics from './components/inbox/QueueStatistics';
+
 export default function App() {
   return (
     <div className="h-full flex flex-col">
       <TopBar />
       <div className="flex-1 flex overflow-hidden">
-        <ListPanel />
+        <ListPanel>
+          <QueueStatistics />
+        </ListPanel>
         <DetailPanel />
       </div>
     </div>
