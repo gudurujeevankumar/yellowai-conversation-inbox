@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useRef } from 'react';
 import type { Conversation, FetchState, ConversationStatus } from '../../types';
 import ConversationItem from './ConversationItem';
 
@@ -14,6 +14,18 @@ export default function ConversationList({ selectedId, onSelect, statusOverrides
   const [state, setState] = useState<FetchState<Conversation[]>>({ status: 'idle' });
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState<FilterType>('all');
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === '/' && document.activeElement?.tagName !== 'INPUT' && document.activeElement?.tagName !== 'TEXTAREA') {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   useEffect(() => {
     let mounted = true;
@@ -69,8 +81,19 @@ export default function ConversationList({ selectedId, onSelect, statusOverrides
 
   if (state.status === 'loading' || state.status === 'idle') {
     return (
-      <div className="flex-1 flex items-center justify-center p-8">
-        <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>Loading conversations...</p>
+      <div className="flex-1 flex flex-col pt-3 overflow-hidden" aria-busy="true" aria-label="Loading conversations">
+        {[...Array(6)].map((_, i) => (
+          <div key={i} className="px-4 sm:px-5 py-5 border-b border-[var(--color-border-default)] animate-pulse flex gap-3">
+            <div className="w-10 h-10 rounded-full shrink-0" style={{ backgroundColor: 'var(--color-bg-tertiary)' }} />
+            <div className="flex-1 min-w-0">
+              <div className="flex justify-between items-center mb-1">
+                <div className="h-4 w-24 rounded" style={{ backgroundColor: 'var(--color-bg-tertiary)' }} />
+                <div className="h-3 w-10 rounded" style={{ backgroundColor: 'var(--color-bg-tertiary)' }} />
+              </div>
+              <div className="h-3 w-3/4 rounded mt-2" style={{ backgroundColor: 'var(--color-bg-tertiary)' }} />
+            </div>
+          </div>
+        ))}
       </div>
     );
   }
@@ -98,13 +121,15 @@ export default function ConversationList({ selectedId, onSelect, statusOverrides
             <path d="m21 21-4.3-4.3"/>
           </svg>
           <input 
+            ref={searchInputRef}
             type="text" 
-            placeholder="Search conversations..." 
+            placeholder="Search conversations... (Press '/')" 
             className="flex-1 bg-transparent outline-none text-sm min-w-0"
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
             style={{ color: 'var(--color-text-primary)' }}
             aria-label="Search conversations"
+            title="Press '/' to search"
           />
         </div>
         
@@ -115,11 +140,12 @@ export default function ConversationList({ selectedId, onSelect, statusOverrides
               role="radio"
               aria-checked={activeFilter === filter}
               onClick={() => setActiveFilter(filter)}
-              className="px-3 py-1.5 rounded-full text-xs font-medium capitalize whitespace-nowrap transition-colors"
+              className="px-3 py-1.5 rounded-full text-xs font-medium capitalize whitespace-nowrap transition-all duration-200 focus-visible:ring-2 focus-visible:ring-[var(--color-action-primary)] focus-visible:outline-none hover:opacity-90"
               style={{
                 backgroundColor: activeFilter === filter ? 'var(--color-action-primary)' : 'var(--color-bg-tertiary)',
                 color: activeFilter === filter ? '#FFFFFF' : 'var(--color-text-secondary)',
               }}
+              title={`Filter by ${filter}`}
             >
               {filter}
             </button>

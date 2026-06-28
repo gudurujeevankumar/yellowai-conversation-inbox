@@ -34,8 +34,8 @@ export default function ConversationItem({ conversation, isSelected = false, onC
           onClick?.();
         }
       }}
-      className={`px-4 sm:px-5 py-5 border-b border-l-2 cursor-pointer transition-colors duration-200 focus-visible
-        ${isSelected ? 'bg-[var(--color-bg-tertiary)] border-[var(--color-action-primary)]' : 'border-l-transparent hover:bg-[var(--color-bg-tertiary)]'}
+      className={`px-4 sm:px-5 py-5 border-b border-l-2 cursor-pointer transition-all duration-200 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--color-action-primary)] focus-visible:outline-none
+        ${isSelected ? 'bg-[var(--color-bg-tertiary)] border-[var(--color-action-primary)]' : 'border-l-transparent hover:bg-[var(--color-bg-tertiary)] hover:pl-5 sm:hover:pl-6'}
       `}
       style={{ borderColor: 'var(--color-border-default)' }}
     >

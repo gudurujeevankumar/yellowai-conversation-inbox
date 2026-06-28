@@ -115,6 +115,7 @@
   /* ── Scrollbar ───────────────────────────────────── */
   ::-webkit-scrollbar {
     width: 6px;
+    height: 6px;
   }
 
   ::-webkit-scrollbar-track {
@@ -128,5 +129,21 @@
 
   ::-webkit-scrollbar-thumb:hover {
     background: var(--color-text-tertiary);
+  }
+
+  /* ── Animations ──────────────────────────────────── */
+  @keyframes toast-slide-in {
+    from {
+      opacity: 0;
+      transform: translateY(1rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-toast {
+    animation: toast-slide-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 }

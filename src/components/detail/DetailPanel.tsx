@@ -9,9 +9,10 @@ interface DetailPanelProps {
   onBack?: () => void;
   onAssign?: (id: string) => void;
   onResolve?: (id: string) => void;
+  onMessageSent?: () => void;
 }
 
-export default function DetailPanel({ children, conversation, className = '', onBack, onAssign, onResolve }: DetailPanelProps) {
+export default function DetailPanel({ children, conversation, className = '', onBack, onAssign, onResolve, onMessageSent }: DetailPanelProps) {
   if (!conversation) {
     return (
       <main
@@ -23,6 +24,14 @@ export default function DetailPanel({ children, conversation, className = '', on
       </main>
     );
   }
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onBack?.();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onBack]);
 
   const { customer, status, urgency, id, messages } = conversation;
   
@@ -47,6 +56,7 @@ export default function DetailPanel({ children, conversation, className = '', on
       timestamp: new Date().toISOString()
     };
     setLocalMessages(prev => [...prev, newMessage]);
+    onMessageSent?.();
   };
   
   const getInitials = (name: string) => {
@@ -72,7 +82,7 @@ export default function DetailPanel({ children, conversation, className = '', on
         <button
           onClick={() => onAssign?.(id)}
           disabled={isAssigned || isResolved}
-          className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90 focus-visible:ring-2 focus-visible:ring-[var(--color-action-primary)] focus-visible:outline-none"
           style={{
             backgroundColor: isAssigned ? 'var(--color-bg-tertiary)' : 'var(--color-action-primary)',
             color: isAssigned ? 'var(--color-text-tertiary)' : '#fff'
@@ -84,7 +94,7 @@ export default function DetailPanel({ children, conversation, className = '', on
         <button
           onClick={() => onResolve?.(id)}
           disabled={isResolved}
-          className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors hover:bg-[var(--color-bg-tertiary)] disabled:opacity-50 disabled:cursor-not-allowed border"
+          className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 hover:bg-[var(--color-bg-tertiary)] disabled:opacity-50 disabled:cursor-not-allowed border focus-visible:ring-2 focus-visible:ring-[var(--color-action-primary)] focus-visible:outline-none"
           style={{
             backgroundColor: 'transparent',
             borderColor: 'var(--color-border-default)',
@@ -220,13 +230,14 @@ export default function DetailPanel({ children, conversation, className = '', on
               className={`flex flex-col max-w-[85%] sm:max-w-[75%] ${isOutgoing ? 'self-end items-end' : 'self-start items-start'}`}
             >
               <div 
-                className="px-4 py-3 rounded-2xl shadow-sm"
+                className="px-4 py-3 rounded-2xl shadow-sm transition-all duration-200 hover:shadow-md hover:scale-[1.01]"
                 style={{
                   backgroundColor: isOutgoing ? 'var(--color-action-primary)' : 'var(--color-bg-surface)',
                   color: isOutgoing ? '#FFFFFF' : 'var(--color-text-primary)',
                   borderBottomRightRadius: isOutgoing ? '4px' : '16px',
                   borderBottomLeftRadius: !isOutgoing ? '4px' : '16px',
-                  border: isOutgoing ? 'none' : '1px solid var(--color-border-default)'
+                  border: isOutgoing ? 'none' : '1px solid var(--color-border-default)',
+                  transformOrigin: isOutgoing ? 'bottom right' : 'bottom left'
                 }}
               >
                 <p className="text-sm leading-relaxed whitespace-pre-wrap break-words">{message.content}</p>
@@ -247,12 +258,12 @@ export default function DetailPanel({ children, conversation, className = '', on
 
 function DetailEmptyState() {
   return (
-    <div className="flex-1 flex flex-col items-center justify-center gap-3">
+    <div className="flex-1 flex flex-col items-center justify-center gap-4 text-center px-4">
       <div
-        className="w-12 h-12 rounded-xl flex items-center justify-center text-xl"
-        style={{ backgroundColor: 'var(--color-bg-tertiary)' }}
+        className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shadow-sm"
+        style={{ backgroundColor: 'var(--color-bg-tertiary)', color: 'var(--color-text-tertiary)' }}
       >
-        📥
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
       </div>
       <p
         className="text-sm font-medium"
