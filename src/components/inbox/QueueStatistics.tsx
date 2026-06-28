@@ -102,6 +102,23 @@ export default function QueueStatistics({ statusOverrides = {} }: QueueStatistic
           accentColor="var(--color-action-success)"
         />
       </div>
+      
+      <div className="mt-3 flex flex-wrap items-center gap-2">
+        <span className="text-[10px] font-semibold uppercase tracking-wider mr-1" style={{ color: 'var(--color-text-tertiary)' }}>
+          Priority
+        </span>
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="px-1.5 py-0.5 rounded text-[10px] font-medium inline-flex items-center gap-1.5 border border-transparent" style={{ backgroundColor: 'var(--theme-priority-high-bg)', color: 'var(--theme-priority-high)' }}>
+            High <span className="font-bold">{stats.high}</span>
+          </span>
+          <span className="px-1.5 py-0.5 rounded text-[10px] font-medium inline-flex items-center gap-1.5 border border-transparent" style={{ backgroundColor: 'var(--theme-priority-medium-bg)', color: 'var(--theme-priority-medium)' }}>
+            Medium <span className="font-bold">{stats.medium}</span>
+          </span>
+          <span className="px-1.5 py-0.5 rounded text-[10px] font-medium inline-flex items-center gap-1.5 border border-transparent" style={{ backgroundColor: 'var(--theme-priority-low-bg)', color: 'var(--theme-priority-low)' }}>
+            Low <span className="font-bold">{stats.low}</span>
+          </span>
+        </div>
+      </div>
     </div>
   );
 }

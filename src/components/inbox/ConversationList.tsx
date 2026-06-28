@@ -150,9 +150,9 @@ export default function ConversationList({ selectedId, onSelect, statusOverrides
           />
         </div>
         
-        <div className="flex flex-col gap-2 mt-3">
+        <div className="flex flex-col gap-4 mt-4 mb-1">
           <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide pb-0.5" role="radiogroup" aria-label="Status filters">
-            <span className="text-[10px] font-semibold uppercase tracking-wider w-[42px] shrink-0" style={{ color: 'var(--color-text-tertiary)' }}>Status</span>
+            <span className="text-[10px] font-semibold uppercase tracking-wider w-14 shrink-0 text-left" style={{ color: 'var(--color-text-tertiary)' }}>Status</span>
             <button
               role="radio"
               aria-checked={statusFilter === 'all'}
@@ -185,7 +185,7 @@ export default function ConversationList({ selectedId, onSelect, statusOverrides
           </div>
 
           <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide pb-0.5" role="radiogroup" aria-label="Priority filters">
-            <span className="text-[10px] font-semibold uppercase tracking-wider w-[42px] shrink-0" style={{ color: 'var(--color-text-tertiary)' }}>Priority</span>
+            <span className="text-[10px] font-semibold uppercase tracking-wider w-14 shrink-0 text-left" style={{ color: 'var(--color-text-tertiary)' }}>Priority</span>
             <button
               role="radio"
               aria-checked={priorityFilter === 'all'}
