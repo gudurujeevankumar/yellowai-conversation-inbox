@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, type ReactNode } from 'react';
+import { useState, useRef, useEffect, useMemo, type ReactNode } from 'react';
 import type { Conversation, Message } from '../../types';
 import MessageComposer from './MessageComposer';
 
@@ -13,6 +13,30 @@ interface DetailPanelProps {
 }
 
 export default function DetailPanel({ children, conversation, className = '', onBack, onAssign, onResolve, onMessageSent }: DetailPanelProps) {
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [localMessages, setLocalMessages] = useState<Message[]>([]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onBack?.();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onBack]);
+
+  useEffect(() => {
+    setLocalMessages([]);
+  }, [conversation?.id]);
+
+  const allMessages = useMemo(() => {
+    if (!conversation) return [];
+    return [...conversation.messages, ...localMessages];
+  }, [conversation, localMessages]);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [allMessages]);
+
   if (!conversation) {
     return (
       <main
@@ -25,28 +49,7 @@ export default function DetailPanel({ children, conversation, className = '', on
     );
   }
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onBack?.();
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [onBack]);
-
-  const { customer, status, urgency, id, messages } = conversation;
-  
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const [localMessages, setLocalMessages] = useState<Message[]>([]);
-
-  useEffect(() => {
-    setLocalMessages([]);
-  }, [id]);
-
-  const allMessages = [...messages, ...localMessages];
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [allMessages]);
+  const { customer, status, urgency, id } = conversation;
 
   const handleSendMessage = (content: string) => {
     const newMessage: Message = {

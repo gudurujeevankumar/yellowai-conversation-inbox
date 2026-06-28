@@ -8,6 +8,8 @@
 
 A modern enterprise-style conversation inbox built with React, TypeScript, Tailwind CSS and MSW.
 
+**[Live Demo](https://yellowai-conversation-inbox.vercel.app)** | **[GitHub Repository](https://github.com/gudurujeevankumar/yellowai-conversation-inbox)**
+
 ---
 
 ## Overview
