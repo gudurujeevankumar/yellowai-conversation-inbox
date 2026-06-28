@@ -5,6 +5,7 @@
 // === Domain Enums ===
 
 export type ConversationStatus = 'waiting' | 'assigned' | 'resolved';
+export type PriorityLevel = 'high' | 'medium' | 'low';
 export type UrgencyLevel = 'critical' | 'high' | 'medium' | 'low';
 export type SentimentLabel = 'angry' | 'frustrated' | 'neutral' | 'satisfied';
 export type Channel = 'web' | 'whatsapp' | 'email' | 'voice';
@@ -38,6 +39,7 @@ export interface Conversation {
   id: string;
   customer: Customer;
   status: ConversationStatus;
+  priority: PriorityLevel;
   urgency: UrgencyLevel;
   sentiment: SentimentLabel;
   channel: Channel;

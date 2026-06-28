@@ -24,6 +24,7 @@ export const mockConversations: Conversation[] = [
     id: 'conv-001',
     customer: { id: 'cust-001', name: 'Amara Singh', email: 'amara.s@veridianbank.com', tier: 'enterprise' },
     status: 'waiting',
+    priority: 'high', // Payment failure + angry enterprise customer
     urgency: 'critical',
     sentiment: 'angry',
     channel: 'whatsapp',
@@ -52,6 +53,7 @@ export const mockConversations: Conversation[] = [
     id: 'conv-002',
     customer: { id: 'cust-002', name: 'Rahul Mehta', email: 'rahul.m@globalretail.com', tier: 'pro' },
     status: 'waiting',
+    priority: 'medium', // Refund request
     urgency: 'critical',
     sentiment: 'frustrated',
     channel: 'web',
@@ -76,6 +78,7 @@ export const mockConversations: Conversation[] = [
     id: 'conv-003',
     customer: { id: 'cust-003', name: 'Chen Wei', email: 'chen.w@techcorp.cn', tier: 'enterprise' },
     status: 'waiting',
+    priority: 'high', // Production API down (Service outage) + Enterprise
     urgency: 'critical',
     sentiment: 'angry',
     channel: 'email',
@@ -99,6 +102,7 @@ export const mockConversations: Conversation[] = [
     id: 'conv-004',
     customer: { id: 'cust-004', name: 'Fatima Al-Rashid', email: 'fatima@luxehotel.ae', tier: 'enterprise' },
     status: 'waiting',
+    priority: 'high', // Enterprise customer + frustrated (Bot sending wrong info)
     urgency: 'critical',
     sentiment: 'frustrated',
     channel: 'whatsapp',
@@ -124,6 +128,7 @@ export const mockConversations: Conversation[] = [
     id: 'conv-005',
     customer: { id: 'cust-005', name: 'Sofia Chen', email: 'sofia.c@startupxyz.io', tier: 'enterprise' },
     status: 'waiting',
+    priority: 'high', // Account locked + Enterprise
     urgency: 'high',
     sentiment: 'neutral',
     channel: 'email',
@@ -147,6 +152,7 @@ export const mockConversations: Conversation[] = [
     id: 'conv-006',
     customer: { id: 'cust-006', name: 'James Okafor', email: 'james.o@finservpro.com', tier: 'pro' },
     status: 'waiting',
+    priority: 'high', // Billing issue (duplicate charge)
     urgency: 'high',
     sentiment: 'frustrated',
     channel: 'web',
@@ -170,6 +176,7 @@ export const mockConversations: Conversation[] = [
     id: 'conv-007',
     customer: { id: 'cust-007', name: 'Maria Gonzalez', email: 'maria@retailmax.mx', tier: 'enterprise' },
     status: 'assigned',
+    priority: 'high', // Enterprise customer (Integration broken)
     urgency: 'high',
     sentiment: 'neutral',
     channel: 'voice',
@@ -193,6 +200,7 @@ export const mockConversations: Conversation[] = [
     id: 'conv-008',
     customer: { id: 'cust-008', name: 'Amir Hassan', email: 'amir@ecomstore.pk', tier: 'pro' },
     status: 'waiting',
+    priority: 'medium', // Order tracking/delivery issue
     urgency: 'high',
     sentiment: 'frustrated',
     channel: 'whatsapp',
@@ -218,6 +226,7 @@ export const mockConversations: Conversation[] = [
     id: 'conv-009',
     customer: { id: 'cust-009', name: 'Priya Kapoor', email: 'priya.k@devshop.in', tier: 'standard' },
     status: 'waiting',
+    priority: 'medium', // General technical issue (API key)
     urgency: 'medium',
     sentiment: 'neutral',
     channel: 'email',
@@ -242,6 +251,7 @@ export const mockConversations: Conversation[] = [
     id: 'conv-010',
     customer: { id: 'cust-010', name: 'David Park', email: 'david.p@mediaco.kr', tier: 'pro' },
     status: 'assigned',
+    priority: 'low', // Documentation help (setup guide)
     urgency: 'medium',
     sentiment: 'neutral',
     channel: 'web',
@@ -265,6 +275,7 @@ export const mockConversations: Conversation[] = [
     id: 'conv-011',
     customer: { id: 'cust-011', name: 'Lena Müller', email: 'lena.m@automotiv.de', tier: 'enterprise' },
     status: 'waiting',
+    priority: 'high', // Enterprise customer (Analytics issue)
     urgency: 'medium',
     sentiment: 'neutral',
     channel: 'email',
@@ -287,6 +298,7 @@ export const mockConversations: Conversation[] = [
     id: 'conv-012',
     customer: { id: 'cust-012', name: 'Tomoko Yamada', email: 'tomoko@retailjp.co.jp', tier: 'pro' },
     status: 'waiting',
+    priority: 'medium', // General technical issue (Webhook failing)
     urgency: 'medium',
     sentiment: 'frustrated',
     channel: 'web',
@@ -310,6 +322,7 @@ export const mockConversations: Conversation[] = [
     id: 'conv-013',
     customer: { id: 'cust-013', name: 'Alex Rivera', email: 'alex@saasplatform.us', tier: 'standard' },
     status: 'waiting',
+    priority: 'medium', // General technical issue (Settings not saving)
     urgency: 'medium',
     sentiment: 'neutral',
     channel: 'web',
@@ -333,6 +346,7 @@ export const mockConversations: Conversation[] = [
     id: 'conv-014',
     customer: { id: 'cust-014', name: 'Nadia Petrova', email: 'nadia@travelcorp.ru', tier: 'enterprise' },
     status: 'assigned',
+    priority: 'high', // Enterprise customer (Data export)
     urgency: 'medium',
     sentiment: 'neutral',
     channel: 'email',
@@ -355,6 +369,7 @@ export const mockConversations: Conversation[] = [
     id: 'conv-015',
     customer: { id: 'cust-015', name: 'Kwame Asante', email: 'kwame@fintechgh.com', tier: 'standard' },
     status: 'waiting',
+    priority: 'low', // Non-urgent support (Template rejected)
     urgency: 'medium',
     sentiment: 'neutral',
     channel: 'whatsapp',
@@ -380,6 +395,7 @@ export const mockConversations: Conversation[] = [
     id: 'conv-016',
     customer: { id: 'cust-016', name: 'Oliver Thompson', email: 'oliver@smallbiz.co.uk', tier: 'standard' },
     status: 'waiting',
+    priority: 'low', // Documentation help (CSS customization)
     urgency: 'low',
     sentiment: 'satisfied',
     channel: 'web',
@@ -403,6 +419,7 @@ export const mockConversations: Conversation[] = [
     id: 'conv-017',
     customer: { id: 'cust-017', name: 'Isabella Costa', email: 'isabella@beautystore.br', tier: 'pro' },
     status: 'assigned',
+    priority: 'medium', // Account verification/modification (Rate limit)
     urgency: 'low',
     sentiment: 'neutral',
     channel: 'email',
@@ -425,6 +442,7 @@ export const mockConversations: Conversation[] = [
     id: 'conv-018',
     customer: { id: 'cust-018', name: 'Yuki Tanaka', email: 'yuki@edtech.jp', tier: 'standard' },
     status: 'waiting',
+    priority: 'low', // Feature request
     urgency: 'low',
     sentiment: 'neutral',
     channel: 'web',
@@ -448,6 +466,7 @@ export const mockConversations: Conversation[] = [
     id: 'conv-019',
     customer: { id: 'cust-019', name: 'Ahmed Ibrahim', email: 'ahmed@logistics.eg', tier: 'pro' },
     status: 'waiting',
+    priority: 'low', // Product information (Plan comparison)
     urgency: 'low',
     sentiment: 'neutral',
     channel: 'whatsapp',
@@ -470,6 +489,7 @@ export const mockConversations: Conversation[] = [
     id: 'conv-020',
     customer: { id: 'cust-020', name: 'Emily Watson', email: 'emily@nonprofitorg.org', tier: 'standard' },
     status: 'waiting',
+    priority: 'low', // Feedback and minor UI suggestion
     urgency: 'low',
     sentiment: 'satisfied',
     channel: 'email',
@@ -493,6 +513,7 @@ export const mockConversations: Conversation[] = [
     id: 'conv-021',
     customer: { id: 'cust-021', name: 'Marcus Johnson', email: 'marcus@insuretech.us', tier: 'enterprise' },
     status: 'waiting',
+    priority: 'high', // Security/Compliance concern + Enterprise
     urgency: 'high',
     sentiment: 'frustrated',
     channel: 'voice',
@@ -515,6 +536,7 @@ export const mockConversations: Conversation[] = [
     id: 'conv-022',
     customer: { id: 'cust-022', name: 'Lisa Chang', email: 'lisa@retailgroup.sg', tier: 'pro' },
     status: 'waiting',
+    priority: 'medium', // General technical issue (CSV import failing)
     urgency: 'medium',
     sentiment: 'neutral',
     channel: 'web',
@@ -538,6 +560,7 @@ export const mockConversations: Conversation[] = [
     id: 'conv-023',
     customer: { id: 'cust-023', name: 'Roberto Esposito', email: 'roberto@fashionit.it', tier: 'standard' },
     status: 'waiting',
+    priority: 'low', // Product information (Nonprofit pricing)
     urgency: 'low',
     sentiment: 'neutral',
     channel: 'email',
@@ -560,6 +583,7 @@ export const mockConversations: Conversation[] = [
     id: 'conv-024',
     customer: { id: 'cust-024', name: 'Sarah Mitchell', email: 'sarah@healthapp.au', tier: 'pro' },
     status: 'assigned',
+    priority: 'high', // Security concern (Medical misinformation)
     urgency: 'high',
     sentiment: 'frustrated',
     channel: 'web',
@@ -582,6 +606,7 @@ export const mockConversations: Conversation[] = [
     id: 'conv-025',
     customer: { id: 'cust-025', name: 'Pierre Dubois', email: 'pierre@luxegroup.fr', tier: 'enterprise' },
     status: 'waiting',
+    priority: 'high', // Enterprise customer (SSO setup)
     urgency: 'medium',
     sentiment: 'neutral',
     channel: 'email',
@@ -605,6 +630,7 @@ export const mockConversations: Conversation[] = [
     id: 'conv-026',
     customer: { id: 'cust-026', name: 'Ananya Reddy', email: 'ananya@quickcommerce.in', tier: 'pro' },
     status: 'waiting',
+    priority: 'high', // Billing issue (Charged after cancellation)
     urgency: 'high',
     sentiment: 'angry',
     channel: 'whatsapp',
@@ -628,6 +654,7 @@ export const mockConversations: Conversation[] = [
     id: 'conv-027',
     customer: { id: 'cust-027', name: 'Miguel Santos', email: 'miguel@techstartup.br', tier: 'standard' },
     status: 'waiting',
+    priority: 'low', // General product enquiry (Demo request)
     urgency: 'low',
     sentiment: 'satisfied',
     channel: 'web',
@@ -650,6 +677,7 @@ export const mockConversations: Conversation[] = [
     id: 'conv-028',
     customer: { id: 'cust-028', name: 'Diana Volkov', email: 'diana@mediagroup.ru', tier: 'enterprise' },
     status: 'assigned',
+    priority: 'high', // Enterprise customer (Custom dashboard)
     urgency: 'medium',
     sentiment: 'neutral',
     channel: 'voice',
@@ -672,6 +700,7 @@ export const mockConversations: Conversation[] = [
     id: 'conv-029',
     customer: { id: 'cust-029', name: 'Grace Okonkwo', email: 'grace@bankng.com', tier: 'enterprise' },
     status: 'waiting',
+    priority: 'high', // Enterprise customer + Regulatory compliance
     urgency: 'high',
     sentiment: 'neutral',
     channel: 'email',
@@ -694,6 +723,7 @@ export const mockConversations: Conversation[] = [
     id: 'conv-030',
     customer: { id: 'cust-030', name: 'Rajan Iyer', email: 'rajan@cloudops.in', tier: 'pro' },
     status: 'waiting',
+    priority: 'high', // Service outage/degradation
     urgency: 'medium',
     sentiment: 'frustrated',
     channel: 'web',

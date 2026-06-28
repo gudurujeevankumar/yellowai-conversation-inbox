@@ -8,12 +8,14 @@ interface ConversationListProps {
   statusOverrides?: Record<string, ConversationStatus>;
 }
 
-type FilterType = 'all' | 'open' | 'assigned' | 'resolved';
+type StatusFilterType = 'all' | 'open' | 'assigned' | 'resolved';
+type PriorityFilterType = 'all' | 'high' | 'medium' | 'low';
 
 export default function ConversationList({ selectedId, onSelect, statusOverrides = {} }: ConversationListProps) {
   const [state, setState] = useState<FetchState<Conversation[]>>({ status: 'idle' });
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeFilter, setActiveFilter] = useState<FilterType>('all');
+  const [statusFilter, setStatusFilter] = useState<StatusFilterType>('all');
+  const [priorityFilter, setPriorityFilter] = useState<PriorityFilterType>('all');
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -57,13 +59,16 @@ export default function ConversationList({ selectedId, onSelect, statusOverrides
   const filteredConversations = useMemo(() => {
     if (state.status !== 'success') return [];
     
-    return state.data.filter(conv => {
+    const filtered = state.data.filter(conv => {
       const actualStatus = statusOverrides[conv.id] || conv.status;
 
       // Status Filter
-      if (activeFilter === 'open' && actualStatus !== 'waiting') return false;
-      if (activeFilter === 'assigned' && actualStatus !== 'assigned') return false;
-      if (activeFilter === 'resolved' && actualStatus !== 'resolved') return false;
+      if (statusFilter === 'open' && actualStatus !== 'waiting') return false;
+      if (statusFilter === 'assigned' && actualStatus !== 'assigned') return false;
+      if (statusFilter === 'resolved' && actualStatus !== 'resolved') return false;
+
+      // Priority Filter
+      if (priorityFilter !== 'all' && conv.priority !== priorityFilter) return false;
 
       // Search Filter
       if (!searchQuery.trim()) return true;
@@ -77,7 +82,19 @@ export default function ConversationList({ selectedId, onSelect, statusOverrides
 
       return matchName || matchId || matchMessage;
     });
-  }, [state, searchQuery, activeFilter, statusOverrides]);
+
+    // Sort by Priority (High -> Medium -> Low), then preserve existing order
+    const priorityWeight = { high: 3, medium: 2, low: 1 };
+    
+    return filtered.sort((a, b) => {
+      const pA = priorityWeight[a.priority] || 0;
+      const pB = priorityWeight[b.priority] || 0;
+      if (pA !== pB) {
+        return pB - pA; // Higher weight first
+      }
+      return 0; // Existing order (stable sort in modern JS)
+    });
+  }, [state, searchQuery, statusFilter, priorityFilter, statusOverrides]);
 
   if (state.status === 'loading' || state.status === 'idle') {
     return (
@@ -133,23 +150,72 @@ export default function ConversationList({ selectedId, onSelect, statusOverrides
           />
         </div>
         
-        <div className="flex items-center gap-2 mt-3 overflow-x-auto pb-1 scrollbar-hide" role="radiogroup" aria-label="Filter conversations by status">
-          {(['all', 'open', 'assigned', 'resolved'] as const).map(filter => (
+        <div className="flex flex-col gap-2 mt-3">
+          <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide pb-0.5" role="radiogroup" aria-label="Status filters">
+            <span className="text-[10px] font-semibold uppercase tracking-wider w-[42px] shrink-0" style={{ color: 'var(--color-text-tertiary)' }}>Status</span>
             <button
-              key={filter}
               role="radio"
-              aria-checked={activeFilter === filter}
-              onClick={() => setActiveFilter(filter)}
-              className="px-3 py-1.5 rounded-full text-xs font-medium capitalize whitespace-nowrap transition-all duration-200 focus-visible:ring-2 focus-visible:ring-[var(--color-action-primary)] focus-visible:outline-none hover:opacity-90"
+              aria-checked={statusFilter === 'all'}
+              onClick={() => { setStatusFilter('all'); }}
+              className="px-2.5 py-1 rounded-full text-[11px] font-medium capitalize whitespace-nowrap transition-all duration-200 focus-visible:ring-2 focus-visible:ring-[var(--color-action-primary)] focus-visible:outline-none hover:opacity-90"
               style={{
-                backgroundColor: activeFilter === filter ? 'var(--color-action-primary)' : 'var(--color-bg-tertiary)',
-                color: activeFilter === filter ? '#FFFFFF' : 'var(--color-text-secondary)',
+                backgroundColor: statusFilter === 'all' ? 'var(--color-action-primary)' : 'var(--color-bg-tertiary)',
+                color: statusFilter === 'all' ? '#FFFFFF' : 'var(--color-text-secondary)',
               }}
-              title={`Filter by ${filter}`}
+              title="Filter by All Status"
             >
-              {filter}
+              All
             </button>
-          ))}
+            {(['open', 'assigned', 'resolved'] as const).map(filter => (
+              <button
+                key={filter}
+                role="radio"
+                aria-checked={statusFilter === filter}
+                onClick={() => { setStatusFilter(statusFilter === filter ? 'all' : filter); }}
+                className="px-2.5 py-1 rounded-full text-[11px] font-medium capitalize whitespace-nowrap transition-all duration-200 focus-visible:ring-2 focus-visible:ring-[var(--color-action-primary)] focus-visible:outline-none hover:opacity-90"
+                style={{
+                  backgroundColor: statusFilter === filter ? 'var(--color-action-primary)' : 'var(--color-bg-tertiary)',
+                  color: statusFilter === filter ? '#FFFFFF' : 'var(--color-text-secondary)',
+                }}
+                title={`Filter by ${filter}`}
+              >
+                {filter}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide pb-0.5" role="radiogroup" aria-label="Priority filters">
+            <span className="text-[10px] font-semibold uppercase tracking-wider w-[42px] shrink-0" style={{ color: 'var(--color-text-tertiary)' }}>Priority</span>
+            <button
+              role="radio"
+              aria-checked={priorityFilter === 'all'}
+              onClick={() => { setPriorityFilter('all'); }}
+              className="px-2.5 py-1 rounded-full text-[11px] font-medium capitalize whitespace-nowrap transition-all duration-200 focus-visible:ring-2 focus-visible:ring-[var(--color-action-primary)] focus-visible:outline-none hover:opacity-90"
+              style={{
+                backgroundColor: priorityFilter === 'all' ? 'var(--color-action-primary)' : 'var(--color-bg-tertiary)',
+                color: priorityFilter === 'all' ? '#FFFFFF' : 'var(--color-text-secondary)',
+              }}
+              title="Filter by All Priorities"
+            >
+              All
+            </button>
+            {(['high', 'medium', 'low'] as const).map(filter => (
+              <button
+                key={filter}
+                role="radio"
+                aria-checked={priorityFilter === filter}
+                onClick={() => { setPriorityFilter(priorityFilter === filter ? 'all' : filter); }}
+                className="px-2.5 py-1 rounded-full text-[11px] font-medium capitalize whitespace-nowrap transition-all duration-200 focus-visible:ring-2 focus-visible:ring-[var(--color-action-primary)] focus-visible:outline-none hover:opacity-90"
+                style={{
+                  backgroundColor: priorityFilter === filter ? 'var(--color-action-primary)' : 'var(--color-bg-tertiary)',
+                  color: priorityFilter === filter ? '#FFFFFF' : 'var(--color-text-secondary)',
+                }}
+                title={`Filter by ${filter} priority`}
+              >
+                {filter}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 

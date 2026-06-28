@@ -72,8 +72,8 @@ export default function ConversationItem({ conversation, isSelected = false, onC
             )}
           </div>
           
-          {/* Status Badge */}
-          <div className="mt-2 flex">
+          {/* Status & Priority Badges */}
+          <div className="mt-2 flex items-center gap-2">
             <span 
               className="text-[10px] uppercase tracking-wider font-semibold px-2 h-[18px] inline-flex items-center rounded-full"
               style={{ 
@@ -84,6 +84,18 @@ export default function ConversationItem({ conversation, isSelected = false, onC
               }}
             >
               {status}
+            </span>
+            
+            <span 
+              className="text-[10px] uppercase tracking-wider font-semibold px-2 h-[18px] inline-flex items-center rounded-full"
+              style={{ 
+                backgroundColor: `var(--theme-priority-${conversation.priority}-bg)`,
+                color: `var(--theme-priority-${conversation.priority})`,
+                border: '1px solid transparent'
+              }}
+              aria-label={`${conversation.priority} Priority`}
+            >
+              {conversation.priority === 'high' ? '🔴' : conversation.priority === 'medium' ? '🟠' : '🟢'} {conversation.priority}
             </span>
           </div>
         </div>

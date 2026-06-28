@@ -95,6 +95,13 @@
   --theme-urgency-low: #52525B;
   --theme-urgency-low-bg: #F4F4F5;
   
+  --theme-priority-high: #DC2626;
+  --theme-priority-high-bg: #FEE2E2;
+  --theme-priority-medium: #EA580C;
+  --theme-priority-medium-bg: #FFEDD5;
+  --theme-priority-low: #16A34A;
+  --theme-priority-low-bg: #DCFCE7;
+  
   --theme-tier-enterprise: #7C3AED;
   --theme-tier-enterprise-bg: #EDE9FE;
   --theme-tier-pro: #2563EB;
@@ -124,6 +131,13 @@
   --theme-urgency-medium-bg: #3B3107;
   --theme-urgency-low: #71717A;
   --theme-urgency-low-bg: #27272A;
+  
+  --theme-priority-high: #EF4444;
+  --theme-priority-high-bg: #451A1A;
+  --theme-priority-medium: #F97316;
+  --theme-priority-medium-bg: #432107;
+  --theme-priority-low: #22C55E;
+  --theme-priority-low-bg: #052E16;
   
   --theme-tier-enterprise: #A78BFA;
   --theme-tier-enterprise-bg: #2E1065;

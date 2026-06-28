@@ -49,7 +49,7 @@ export default function DetailPanel({ children, conversation, className = '', on
     );
   }
 
-  const { customer, status, urgency, id } = conversation;
+  const { customer, status, urgency, id, priority } = conversation;
 
   const handleSendMessage = (content: string) => {
     const newMessage: Message = {
@@ -192,6 +192,17 @@ export default function DetailPanel({ children, conversation, className = '', on
                 }}
               >
                 {status}
+              </span>
+              <span 
+                className="px-2 h-[18px] md:h-[20px] inline-flex items-center rounded-full text-[9px] md:text-[10px] uppercase tracking-wider font-semibold shrink-0"
+                style={{ 
+                  backgroundColor: `var(--theme-priority-${priority}-bg)`,
+                  color: `var(--theme-priority-${priority})`,
+                  border: '1px solid transparent'
+                }}
+                aria-label={`${priority} Priority`}
+              >
+                {priority === 'high' ? '🔴' : priority === 'medium' ? '🟠' : '🟢'} {priority}
               </span>
               <span 
                 className="px-2 h-[18px] md:h-[20px] inline-flex items-center rounded-full text-[9px] md:text-[10px] uppercase tracking-wider font-semibold shrink-0"
