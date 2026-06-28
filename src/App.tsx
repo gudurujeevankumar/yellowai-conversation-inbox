@@ -3,6 +3,7 @@ import ListPanel from './components/inbox/ListPanel';
 import DetailPanel from './components/detail/DetailPanel';
 
 import QueueStatistics from './components/inbox/QueueStatistics';
+import ConversationList from './components/inbox/ConversationList';
 
 export default function App() {
   return (
@@ -11,6 +12,7 @@ export default function App() {
       <div className="flex-1 flex overflow-hidden">
         <ListPanel>
           <QueueStatistics />
+          <ConversationList />
         </ListPanel>
         <DetailPanel />
       </div>
